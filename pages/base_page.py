@@ -71,3 +71,15 @@ class BasePage:
 
     def should_be_element(self, how, what):
         assert self.is_element_present(how, what), f"{what} данный локатор не найден на странице"
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
+    def field_enter(self, how, what, text):
+        self.should_be_element(how, what)
+        self.browser.find_element(how, what).send_keys(text)
+
+    def click(self, how, what):
+        self.should_be_element(how, what)
+        self.browser.find_element(how, what).click()
