@@ -10,14 +10,6 @@ class ProductPage(BasePage):
         login_link.click()
         self.solve_quiz_and_get_code()
 
-    def should_be_element(self, how, what):
-        assert self.is_element_present(how, what), f"{what} данный локатор не найден на странице"
-
-    def get_element_text(self, how, what):
-        self.should_be_element(how, what)
-        text = self.browser.find_element(how, what).text
-        return text
-
     def assert_book_is_added(self):
         actual_price = self.get_element_text(*ProductPageLocators.PRICE_BOOK)
         actual_name = self.get_element_text(*ProductPageLocators.NAME_BOOK)

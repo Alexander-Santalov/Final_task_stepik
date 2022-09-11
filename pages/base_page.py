@@ -22,10 +22,13 @@ class BasePage:
         return True
 
     def is_not_element_present(self, how, what, timeout=4):
+        self.browser.implicitly_wait(0)
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
         except TimeoutException:
+            self.browser.implicitly_wait(10)
             return True
+        self.browser.implicitly_wait(10)
         return False
 
     def solve_quiz_and_get_code(self):
@@ -56,3 +59,15 @@ class BasePage:
 
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Ссылка на логин отсутсвует"
+
+    def go_to_view_basket(self):
+        assert self.is_element_present(*BasePageLocators.VIEW_BASKET_BUTTON), f"Кнопка 'Посмотреть корзину' не найдена"
+        self.browser.find_element(*BasePageLocators.VIEW_BASKET_BUTTON).click()
+
+    def get_element_text(self, how, what):
+        self.should_be_element(how, what)
+        text = self.browser.find_element(how, what).text
+        return text
+
+    def should_be_element(self, how, what):
+        assert self.is_element_present(how, what), f"{what} данный локатор не найден на странице"
